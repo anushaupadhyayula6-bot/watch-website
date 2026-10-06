@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#11100f">
+    <title>Shop Watches — Aurelia Atelier</title>
+    <style>
+        :root {
+            --ink: #11100f;
+            --paper: #f0ede6;
+            --gold: #c8a66b;
+            --muted: #aaa59c;
+            --line: #ffffff28
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            background: var(--ink);
+            color: var(--paper);
+            font-family: Arial, sans-serif
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .topline {
+            height: 33px;
+            display: grid;
+            place-items: center;
+            border-bottom: 1px solid #ffffff18;
+            color: #c5b79e;
+            font-size: 9px;
+            letter-spacing: .24em;
+            text-transform: uppercase
+        }
+
+        .store-nav {
+            position: absolute;
+            z-index: 8;
+            top: 33px;
+            left: 0;
+            width: 100%;
+            padding: 22px 5.2%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            background: #11100f22
+        }
+
+        .brand {
+            text-align: left;
+            font: 21px Georgia, serif;
+            letter-spacing: .22em
+        }
+
+        .brand span {
+            display: block;
+            font: 8px Arial, sans-serif;
+            letter-spacing: .38em;
+            color: var(--gold);
+            margin-top: 5px
+        }
+
+        .store-links {
+            display: flex;
+            align-items: center;
+            gap: 27px;
+            font-size: 9px;
+            letter-spacing: .16em;
+            text-transform: uppercase
+        }
+
+        .store-links>a,
+        .shop-menu>button {
+            color: #e5dfd4
+        }
+
+        .shop-menu {
+            position: relative
+        }
+
+        .shop-menu>button {
+            border: 0;
+            background: none;
+            text-transform: uppercase;
+            letter-spacing: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            padding: 12px 0
+        }
+
+        .drop-panel {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: -12px;
+            min-width: 180px;
+            padding: 8px;
+            background: #171615;
+            border: 1px solid var(--line);
+            z-index: 5
+        }
+
+        .drop-panel a {
+            display: block;
+            padding: 12px;
+            color: var(--paper)
+        }
+
+        .shop-menu:hover .drop-panel,
+        .shop-menu:focus-within .drop-panel,
+        .shop-menu.open .drop-panel {
+            display: block
+        }
+
+        .bag-link {
+            border: 1px solid var(--gold);
+            padding: 10px 13px
+        }
+
+        .cart-count {
+            color: var(--gold)
+        }
+
+        .menu {
+            display: none
+        }
+
+        .story {
+            height: 210svh;
+            position: relative;
+            background: #171311
+        }
+
+        .stage {
+            position: sticky;
+            top: 0;
+            height: 100svh;
+            min-height: 640px;
+            overflow: hidden
+        }
+
+        .stage canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .stage:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #100e0ddb 0%, #100e0d88 38%, transparent 75%), linear-gradient(0deg, #11100f, transparent 28%)
+        }
+
+        .hero-copy {
+            position: absolute;
+            z-index: 2;
+            left: 8%;
+            top: 48%;
+            transform: translateY(-40%);
+            max-width: 460px
+        }
+
+        .kicker {
+            font-size: 9px;
+            color: var(--gold);
+            letter-spacing: .25em;
+            text-transform: uppercase
+        }
+
+        .hero-copy h1 {
+            font: clamp(55px, 8vw, 96px)/.96 Georgia, serif;
+            font-weight: 400;
+            margin: 18px 0
+        }
+
+        .hero-copy p {
+            font: 15px/1.8 Georgia, serif;
+            color: #d0c8bb;
+            max-width: 350px
+        }
+
+        .index {
+            position: absolute;
+            z-index: 2;
+            right: 6%;
+            bottom: 35px;
+            font: 12px Georgia;
+            color: var(--gold)
+        }
+
+        .collections {
+            padding: 60px 7% 110px
+        }
+
+        .collection {
+            padding-top: 65px;
+            scroll-margin-top: 35px
+        }
+
+        .collection-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 23px;
+            margin-bottom: 27px
+        }
+
+        .collection-head h2 {
+            font: clamp(34px, 5vw, 56px) Georgia, serif;
+            font-weight: 400;
+            margin: 9px 0 0
+        }
+
+        .collection-head p {
+            font: 14px Georgia, serif;
+            color: var(--muted);
+            max-width: 320px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px
+        }
+
+        .card {
+            background: #181715;
+            transition: transform .35s, opacity .5s;
+            opacity: 0;
+            transform: translateY(25px)
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: none
+        }
+
+        .card:hover {
+            transform: translateY(-6px)
+        }
+
+        .image-wrap {
+            overflow: hidden;
+            background: #211c18;
+            aspect-ratio: 1.18
+        }
+
+        .image-wrap img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transition: transform .7s
+        }
+
+        .card:hover img {
+            transform: scale(1.045)
+        }
+
+        .card-body {
+            padding: 19px 18px 20px
+        }
+
+        .tag {
+            font-size: 8px;
+            color: var(--gold);
+            letter-spacing: .18em;
+            text-transform: uppercase
+        }
+
+        .card h3 {
+            font: 24px Georgia, serif;
+            font-weight: 400;
+            margin: 9px 0
+        }
+
+        .card p {
+            color: var(--muted);
+            font: 13px/1.6 Georgia, serif;
+            min-height: 42px;
+            margin: 0 0 16px
+        }
+
+        .buyrow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--line);
+            padding-top: 14px
+        }
+
+        .price {
+            font: 16px Georgia, serif
+        }
+
+        .add {
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--paper);
+            padding: 11px 12px;
+            font-size: 8px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            cursor: pointer
+        }
+
+        .add:hover {
+            background: var(--gold);
+            color: #17130d
+        }
+
+        .note {
+            text-align: center;
+            color: var(--muted);
+            font: 13px Georgia, serif;
+            margin: 38px auto 0;
+            max-width: 610px
+        }
+
+        .foot {
+            border-top: 1px solid var(--line);
+            padding: 25px 6%;
+            display: flex;
+            justify-content: space-between;
+            color: #89847c;
+            font-size: 9px;
+            letter-spacing: .13em;
+            text-transform: uppercase
+        }
+
+        @media(max-width:720px) {
+            .store-nav {
+                padding: 17px 6%
+            }
+
+            .store-nav .menu {
+                display: block;
+                background: none;
+                border: 0;
+                color: var(--paper);
+                text-transform: uppercase;
+                font-size: 9px;
+                letter-spacing: .13em
+            }
+
+            .brand {
+                font-size: 17px
+            }
+
+            .store-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 12px 6%;
+                background: #11100f;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0
+            }
+
+            .store-nav.open .store-links {
+                display: flex
+            }
+
+            .store-links>a,
+            .shop-menu>button {
+                display: block;
+                text-align: left;
+                padding: 13px 0
+            }
+
+            .drop-panel {
+                display: block;
+                position: static;
+                border: 0;
+                padding: 0 0 5px 12px
+            }
+
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px
+            }
+
+            .collections {
+                padding: 28px 5% 70px
+            }
+
+            .collection-head {
+                display: block
+            }
+
+            .collection-head p {
+                margin-bottom: 0
+            }
+
+            .card-body {
+                padding: 13px 11px
+            }
+
+            .card h3 {
+                font-size: 20px
+            }
+
+            .card p {
+                font-size: 12px
+            }
+
+            .buyrow {
+                align-items: flex-start;
+                gap: 9px;
+                flex-direction: column
+            }
+
+            .story {
+                height: 180svh
+            }
+
+            .hero-copy {
+                left: 7%;
+                right: 7%;
+                top: auto;
+                bottom: 15%;
+                transform: none
+            }
+
+            .hero-copy h1 {
+                font-size: 61px
+            }
+
+            .foot {
+                flex-wrap: wrap;
+                gap: 10px
+            }
+        }
+    .foot{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center}.foot-nav,.foot-social{display:flex;align-items:center;flex-wrap:wrap;gap:15px}.foot-nav{justify-content:center}.foot-social{justify-content:flex-end}.foot-nav a,.foot-social a{color:#aaa59c;transition:color .2s}.foot-nav a:hover,.foot-social a:hover{color:var(--gold)}@media(max-width:740px){.foot{grid-template-columns:1fr;justify-items:center;text-align:center;gap:17px}.foot-nav,.foot-social{justify-content:center;gap:12px}}</style>
+</head>
+
+<body>
+    <div class="topline">Independent watchmaking · Est. 1987</div>
+    <header class="store-nav"><button class="menu" aria-label="Toggle navigation">Menu</button><a class="brand"
+            href="index.html">AURELIA<span>ATELIER HORLOGER</span></a>
+        <nav class="store-links"><a href="index.html">Home</a><a href="about.html">About us</a>
+            <div class="shop-menu"><button type="button">Shop <span>⌄</span></button>
+                <div class="drop-panel"><a href="shop.html#men">Men's watches</a><a href="shop.html#women">Women's
+                        watches</a></div>
+            </div><a href="contact.html">Contact</a><a class="bag-link" href="cart.html">Bag <span
+                    class="cart-count">0</span></a>
+        </nav>
+    </header>
+    <main>
+        <section class="story">
+            <div class="stage"><canvas id="sequence"></canvas>
+                <div class="hero-copy">
+                    <div class="kicker">The Aurelia collection</div>
+                    <h1>Designed to<br>stay with you.</h1>
+                    <p>Explore our men's and women's collection studies: considered shapes, enduring materials and a
+                        mechanical point of view.</p>
+                </div>
+                <div class="index" id="counter">001 / 080</div>
+            </div>
+        </section>
+        <div class="collections">
+            <section class="collection" id="men">
+                <div class="collection-head">
+                    <div>
+                        <div class="kicker">Collection 01</div>
+                        <h2>For him</h2>
+                    </div>
+                    <p>Confident proportions, clean dials and thoughtful everyday details.</p>
+                </div>
+                <div class="grid" id="men-grid"></div>
+            </section>
+            <section class="collection" id="women">
+                <div class="collection-head">
+                    <div>
+                        <div class="kicker">Collection 02</div>
+                        <h2>For her</h2>
+                    </div>
+                    <p>Refined silhouettes with a little room for individual character.</p>
+                </div>
+                <div class="grid" id="women-grid"></div>
+            </section>
+            <p class="note">Collection studies shown with imagery from the supplied No. 08 frame sequence. Product
+                concepts and prices are illustrative.</p>
+        </div>
+    </main>
+    <footer class="foot"><span class="copyright">© Aurelia Atelier 2026</span><nav class="foot-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="about.html">About us</a><a href="shop.html">Shop</a><a href="shop.html#men">Men</a><a href="shop.html#women">Women</a><a href="contact.html">Contact</a><a href="cart.html">Bag</a></nav><nav class="foot-social" aria-label="Social media"><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook ↗</a></nav></footer>
+    <script>
+        (() => { const nav = document.querySelector(".store-nav"); document.querySelector(".menu").onclick = () => nav.classList.toggle("open"); document.querySelector(".shop-menu>button").onclick = () => document.querySelector(".shop-menu").classList.toggle("open"); const KEY = "aurelia-cart", men = [{ id: "meridian-38", name: "Meridian 38", price: 128000, frame: 20, copy: "Polished steel, warm leather and an easy-to-read dial." }, { id: "atelier-08", name: "Atelier No. 08", price: 148000, frame: 240, copy: "A signature automatic with balanced, enduring proportions." }, { id: "field-automatic", name: "Field Automatic", price: 116000, frame: 90, copy: "A considered everyday companion with a tactile strap." }], women = [{ id: "petite-08", name: "Petite No. 08", price: 112000, frame: 1, copy: "A graceful take on the classic Aurelia dial." }, { id: "celeste-30", name: "Celeste 30", price: 136000, frame: 155, copy: "A slim profile with quiet, polished details." }, { id: "luna-dress", name: "Luna Dress", price: 124000, frame: 210, copy: "An understated silhouette for day and evening." }], fmt = n => "₹" + Number(n).toLocaleString("en-IN"); function card(x) { return `<article class="card"><div class="image-wrap"><img loading="lazy" src="frames_24fps/frame_${String(x.frame).padStart(6, "0")}.png" alt="${x.name} collection study"></div><div class="card-body"><div class="tag">Automatic · collection study</div><h3>${x.name}</h3><p>${x.copy}</p><div class="buyrow"><span class="price">${fmt(x.price)}</span><button class="add" data-product="${x.id}">Add to bag +</button></div></div></article>` } document.getElementById("men-grid").innerHTML = men.map(card).join(""); document.getElementById("women-grid").innerHTML = women.map(card).join(""); function updateCount() { let c = []; try { c = JSON.parse(localStorage.getItem(KEY) || "[]") } catch { } document.querySelector(".cart-count").textContent = c.reduce((n, x) => n + x.qty, 0) } document.querySelectorAll(".add").forEach(b => b.onclick = () => { const x = [...men, ...women].find(p => p.id === b.dataset.product); let c = []; try { c = JSON.parse(localStorage.getItem(KEY) || "[]") } catch { } const old = c.find(y => y.id === x.id); if (old) old.qty++; else c.push({ ...x, qty: 1, image: `frames_24fps/frame_${String(x.frame).padStart(6, "0")}.png` }); localStorage.setItem(KEY, JSON.stringify(c)); updateCount(); b.textContent = "Added ✓"; setTimeout(() => b.textContent = "Add to bag +", 1300) }); updateCount(); const cards = document.querySelectorAll(".card"), observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target) } }), { threshold: .12 }); cards.forEach(x => observer.observe(x)); const canvas = document.getElementById("sequence"), ctx = canvas.getContext("2d"), start = 1, end = 80, total = end - start + 1, imgs = new Array(total); let cw = 0, ch = 0, dpr = 1, last = -1; function prog() { const e = document.querySelector(".story"), r = e.getBoundingClientRect(); return Math.max(0, Math.min(1, -r.top / Math.max(1, e.offsetHeight - innerHeight))) } function draw(i) { i = Math.max(0, Math.min(total - 1, i)); const im = imgs[i]; if (!im || !im.complete || !im.naturalWidth) return; ctx.fillStyle = "#171311"; ctx.fillRect(0, 0, cw, ch); const s = Math.max(cw / im.width, ch / im.height), w = im.width * s, h = im.height * s; ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h); last = i; document.getElementById("counter").textContent = String(start + i).padStart(3, "0") + " / " + String(end).padStart(3, "0") } function resize() { const r = canvas.getBoundingClientRect(); dpr = Math.min(devicePixelRatio || 1, 2); cw = r.width; ch = r.height; canvas.width = cw * dpr; canvas.height = ch * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw(Math.round(prog() * (total - 1))) } function update() { const i = Math.round(prog() * (total - 1)); if (i !== last) draw(i) } for (let i = 0; i < total; i++) { imgs[i] = new Image(); imgs[i].src = `frames_24fps/frame_${String(start + i).padStart(6, "0")}.png` } addEventListener("scroll", update, { passive: true }); addEventListener("resize", resize); resize() })();</script>
+</body>
+
+</html>
