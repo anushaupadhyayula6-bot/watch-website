@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#11100f">
+    <title>Contact the Atelier — Aurelia</title>
+    <style>
+        :root {
+            --ink: #11100f;
+            --paper: #f0ede6;
+            --gold: #c8a66b;
+            --muted: #aaa59c;
+            --line: #ffffff28
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            background: var(--ink);
+            color: var(--paper);
+            font-family: Arial, sans-serif
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .topline {
+            height: 33px;
+            display: grid;
+            place-items: center;
+            border-bottom: 1px solid #ffffff18;
+            color: #c5b79e;
+            font-size: 9px;
+            letter-spacing: .24em;
+            text-transform: uppercase
+        }
+
+        .store-nav {
+            position: absolute;
+            z-index: 8;
+            top: 33px;
+            left: 0;
+            width: 100%;
+            padding: 22px 5.2%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            background: #11100f22
+        }
+
+        .brand {
+            text-align: left;
+            font: 21px Georgia, serif;
+            letter-spacing: .22em
+        }
+
+        .brand span {
+            display: block;
+            font: 8px Arial, sans-serif;
+            letter-spacing: .38em;
+            color: var(--gold);
+            margin-top: 5px
+        }
+
+        .store-links {
+            display: flex;
+            align-items: center;
+            gap: 27px;
+            font-size: 9px;
+            letter-spacing: .16em;
+            text-transform: uppercase
+        }
+
+        .store-links>a,
+        .shop-menu>button {
+            color: #e5dfd4
+        }
+
+        .shop-menu {
+            position: relative
+        }
+
+        .shop-menu>button {
+            border: 0;
+            background: none;
+            text-transform: uppercase;
+            letter-spacing: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            padding: 12px 0
+        }
+
+        .drop-panel {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: -12px;
+            min-width: 180px;
+            padding: 8px;
+            background: #171615;
+            border: 1px solid var(--line);
+            z-index: 5
+        }
+
+        .drop-panel a {
+            display: block;
+            padding: 12px;
+            color: var(--paper)
+        }
+
+        .shop-menu:hover .drop-panel,
+        .shop-menu:focus-within .drop-panel,
+        .shop-menu.open .drop-panel {
+            display: block
+        }
+
+        .bag-link {
+            border: 1px solid var(--gold);
+            padding: 10px 13px
+        }
+
+        .cart-count {
+            color: var(--gold)
+        }
+
+        .menu {
+            display: none
+        }
+
+        .hero {
+            height: 145svh;
+            position: relative;
+            background: #171311
+        }
+
+        .stage {
+            height: 100svh;
+            position: sticky;
+            top: 0;
+            overflow: hidden;
+            min-height: 640px
+        }
+
+        .stage canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .stage:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #100e0ddb 0%, #100e0d88 38%, transparent 75%), linear-gradient(0deg, #11100f, transparent 30%)
+        }
+
+        .hero-copy {
+            position: absolute;
+            z-index: 2;
+            left: 8%;
+            top: 47%;
+            transform: translateY(-40%);
+            max-width: 480px
+        }
+
+        .kicker {
+            font-size: 9px;
+            color: var(--gold);
+            letter-spacing: .25em;
+            text-transform: uppercase
+        }
+
+        .hero-copy h1 {
+            font: clamp(54px, 7vw, 88px)/.98 Georgia, serif;
+            font-weight: 400;
+            margin: 18px 0
+        }
+
+        .hero-copy p {
+            font: 15px/1.8 Georgia, serif;
+            color: #d0c8bb;
+            max-width: 370px
+        }
+
+        .contact {
+            padding: 85px 8% 110px;
+            display: grid;
+            grid-template-columns: .8fr 1.2fr;
+            gap: 9vw
+        }
+
+        .contact h2 {
+            font: clamp(34px, 5vw, 58px) Georgia, serif;
+            font-weight: 400;
+            margin: 14px 0 20px
+        }
+
+        .contact-copy p {
+            color: var(--muted);
+            font: 15px/1.8 Georgia, serif;
+            max-width: 360px
+        }
+
+        .info {
+            padding: 20px 0;
+            border-top: 1px solid var(--line);
+            margin-top: 28px
+        }
+
+        .info b {
+            display: block;
+            font-size: 9px;
+            color: var(--gold);
+            letter-spacing: .17em;
+            text-transform: uppercase;
+            margin-bottom: 9px
+        }
+
+        .info span,
+        .info a {
+            font: 14px Georgia, serif;
+            color: #d2cabd
+        }
+
+        .form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        .field {
+            display: grid;
+            gap: 8px
+        }
+
+        .wide {
+            grid-column: 1/-1
+        }
+
+        label {
+            font-size: 9px;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: #c7bfae
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ffffff38;
+            background: #191816;
+            color: var(--paper);
+            font: 14px Arial;
+            border-radius: 0
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: 1px solid var(--gold);
+            border-color: var(--gold)
+        }
+
+        .submit {
+            grid-column: 1/-1;
+            background: var(--gold);
+            color: #17130d;
+            border: 0;
+            padding: 17px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 9px;
+            letter-spacing: .16em
+        }
+
+        .notice {
+            display: none;
+            grid-column: 1/-1;
+            color: var(--gold);
+            font: 14px Georgia, serif
+        }
+
+        .notice.show {
+            display: block
+        }
+
+        .map {
+            padding: 0 8% 100px
+        }
+
+        .map-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 18px
+        }
+
+        .map h2 {
+            font: 36px Georgia, serif;
+            font-weight: 400;
+            margin: 8px 0
+        }
+
+        .map iframe {
+            width: 100%;
+            height: 380px;
+            border: 1px solid var(--line);
+            filter: grayscale(.85) invert(.9) contrast(.82)
+        }
+
+        .map small {
+            color: var(--muted);
+            font: 11px Georgia, serif
+        }
+
+        .foot {
+            border-top: 1px solid var(--line);
+            padding: 25px 6%;
+            display: flex;
+            justify-content: space-between;
+            color: #89847c;
+            font-size: 9px;
+            letter-spacing: .13em;
+            text-transform: uppercase
+        }
+
+        @media(max-width:720px) {
+            .store-nav {
+                padding: 17px 6%
+            }
+
+            .store-nav .menu {
+                display: block;
+                background: none;
+                border: 0;
+                color: var(--paper);
+                text-transform: uppercase;
+                font-size: 9px;
+                letter-spacing: .13em
+            }
+
+            .brand {
+                font-size: 17px
+            }
+
+            .store-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 12px 6%;
+                background: #11100f;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0
+            }
+
+            .store-nav.open .store-links {
+                display: flex
+            }
+
+            .store-links>a,
+            .shop-menu>button {
+                display: block;
+                text-align: left;
+                padding: 13px 0
+            }
+
+            .drop-panel {
+                display: block;
+                position: static;
+                border: 0;
+                padding: 0 0 5px 12px
+            }
+
+            .contact {
+                grid-template-columns: 1fr;
+                padding: 65px 7%;
+                gap: 40px
+            }
+
+            .form {
+                grid-template-columns: 1fr
+            }
+
+            .wide,
+            .submit,
+            .notice {
+                grid-column: auto
+            }
+
+            .map {
+                padding: 0 7% 70px
+            }
+
+            .map-head {
+                display: block
+            }
+
+            .map iframe {
+                height: 300px
+            }
+
+            .hero-copy {
+                left: 7%;
+                right: 7%;
+                top: auto;
+                bottom: 14%;
+                transform: none
+            }
+
+            .hero-copy h1 {
+                font-size: 58px
+            }
+
+            .stage {
+                min-height: 680px
+            }
+
+            .foot {
+                flex-wrap: wrap;
+                gap: 10px
+            }
+        }
+    .foot{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center}.foot-nav,.foot-social{display:flex;align-items:center;flex-wrap:wrap;gap:15px}.foot-nav{justify-content:center}.foot-social{justify-content:flex-end}.foot-nav a,.foot-social a{color:#aaa59c;transition:color .2s}.foot-nav a:hover,.foot-social a:hover{color:var(--gold)}@media(max-width:740px){.foot{grid-template-columns:1fr;justify-items:center;text-align:center;gap:17px}.foot-nav,.foot-social{justify-content:center;gap:12px}}</style>
+</head>
+
+<body>
+    <div class="topline">Independent watchmaking · Est. 1987</div>
+    <header class="store-nav"><button class="menu" aria-label="Toggle navigation">Menu</button><a class="brand"
+            href="index.html">AURELIA<span>ATELIER HORLOGER</span></a>
+        <nav class="store-links"><a href="index.html">Home</a><a href="about.html">About us</a>
+            <div class="shop-menu"><button type="button">Shop <span>⌄</span></button>
+                <div class="drop-panel"><a href="shop.html#men">Men's watches</a><a href="shop.html#women">Women's
+                        watches</a></div>
+            </div><a href="contact.html">Contact</a><a class="bag-link" href="cart.html">Bag <span
+                    class="cart-count">0</span></a>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="stage"><canvas id="sequence"></canvas>
+                <div class="hero-copy">
+                    <div class="kicker">The Aurelia atelier</div>
+                    <h1>A conversation<br>begins here.</h1>
+                    <p>Questions about a timepiece, a visit or the craft behind it? Our small team would be delighted to
+                        hear from you.</p>
+                </div>
+            </div>
+        </section>
+        <section class="contact">
+            <div class="contact-copy">
+                <div class="kicker">Get in touch</div>
+                <h2>We’re here<br>to help.</h2>
+                <p>For collection enquiries and appointment requests, send us a note. We’ll be in touch soon.</p>
+                <div class="info"><b>Visit by appointment</b><span>Mumbai, Maharashtra, India</span></div>
+                <div class="info"><b>Write to the atelier</b><a
+                        href="mailto:atelier@example.com">atelier@example.com</a></div>
+                <div class="info"><b>Opening hours</b><span>Monday – Saturday · 10:00–18:00 IST</span></div>
+            </div>
+            <form class="form" id="contact-form">
+                <div class="field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name"
+                        required></div>
+                <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email"
+                        autocomplete="email" required></div>
+                <div class="field wide"><label for="subject">How can we help?</label><select id="subject"
+                        name="subject">
+                        <option>Watch enquiry</option>
+                        <option>Book an appointment</option>
+                        <option>Aftercare and servicing</option>
+                        <option>Other</option>
+                    </select></div>
+                <div class="field wide"><label for="message">Your message</label><textarea id="message" name="message"
+                        required></textarea></div><button class="submit" type="submit">Send your enquiry&nbsp;
+                    →</button>
+                <div id="notice" class="notice">Thank you. This demo form is ready to connect to an email service.</div>
+            </form>
+        </section>
+        <section class="map">
+            <div class="map-head">
+                <div>
+                    <div class="kicker">Find the atelier</div>
+                    <h2>Made with care in Mumbai.</h2>
+                </div><small>Visits by appointment</small>
+            </div><iframe title="Map showing Mumbai, India" loading="lazy"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=72.795%2C18.91%2C72.86%2C18.97&amp;layer=mapnik&amp;marker=18.932%2C72.835"></iframe>
+        </section>
+    </main>
+    <footer class="foot"><span class="copyright">© Aurelia Atelier 2026</span><nav class="foot-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="about.html">About us</a><a href="shop.html">Shop</a><a href="shop.html#men">Men</a><a href="shop.html#women">Women</a><a href="contact.html">Contact</a><a href="cart.html">Bag</a></nav><nav class="foot-social" aria-label="Social media"><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook ↗</a></nav></footer>
+    <script>
+        (() => { const nav = document.querySelector(".store-nav"); document.querySelector(".menu").onclick = () => nav.classList.toggle("open"); document.querySelector(".shop-menu>button").onclick = () => document.querySelector(".shop-menu").classList.toggle("open"); let c = []; try { c = JSON.parse(localStorage.getItem("aurelia-cart") || "[]") } catch { } document.querySelector(".cart-count").textContent = c.reduce((n, x) => n + x.qty, 0); const canvas = document.getElementById("sequence"), ctx = canvas.getContext("2d"), start = 170, end = 240, total = end - start + 1, imgs = new Array(total); let cw = 0, ch = 0, dpr = 1, last = -1; function prog() { const e = document.querySelector(".hero"), r = e.getBoundingClientRect(); return Math.max(0, Math.min(1, -r.top / Math.max(1, e.offsetHeight - innerHeight))) } function draw(i) { i = Math.max(0, Math.min(total - 1, i)); const im = imgs[i]; if (!im || !im.complete || !im.naturalWidth) return; ctx.fillStyle = "#171311"; ctx.fillRect(0, 0, cw, ch); const s = Math.max(cw / im.width, ch / im.height), w = im.width * s, h = im.height * s; ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h); last = i } function resize() { const r = canvas.getBoundingClientRect(); dpr = Math.min(devicePixelRatio || 1, 2); cw = r.width; ch = r.height; canvas.width = cw * dpr; canvas.height = ch * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw(Math.round(prog() * (total - 1))) } function update() { const i = Math.round(prog() * (total - 1)); if (i !== last) draw(i) } for (let i = 0; i < total; i++) { imgs[i] = new Image(); imgs[i].src = `frames_24fps/frame_${String(start + i).padStart(6, "0")}.png` } addEventListener("scroll", update, { passive: true }); addEventListener("resize", resize); resize(); document.getElementById("contact-form").onsubmit = e => { e.preventDefault(); if (!e.currentTarget.reportValidity()) return; document.getElementById("notice").classList.add("show"); e.currentTarget.reset() } })();</script>
+</body>
+
+</html>
