@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#11100f">
+    <title>Checkout — Aurelia Atelier</title>
+    <style>
+        :root {
+            --ink: #11100f;
+            --paper: #f0ede6;
+            --gold: #c8a66b;
+            --muted: #aaa59c;
+            --line: #ffffff28
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--ink);
+            color: var(--paper);
+            font-family: Arial, sans-serif
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .top {
+            height: 34px;
+            border-bottom: 1px solid var(--line);
+            display: grid;
+            place-items: center;
+            color: #c5b79e;
+            font-size: 9px;
+            letter-spacing: .24em;
+            text-transform: uppercase
+        }
+
+        .nav {
+            padding: 23px 6%;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .brand {
+            font: 20px Georgia, serif;
+            letter-spacing: .2em;
+            text-align: center
+        }
+
+        .brand small {
+            display: block;
+            font: 8px Arial, sans-serif;
+            letter-spacing: .35em;
+            color: var(--gold);
+            margin-top: 5px
+        }
+
+        .navlinks {
+            display: flex;
+            gap: 25px;
+            font-size: 9px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: #d6cfc2
+        }
+
+        .cartlink {
+            color: var(--gold)
+        }
+
+        main {
+            max-width: 1060px;
+            margin: 68px auto 120px;
+            padding: 0 28px
+        }
+
+        .crumb {
+            font-size: 9px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        h1 {
+            font: clamp(43px, 6vw, 68px) Georgia, serif;
+            font-weight: 400;
+            margin: 20px 0 42px
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.15fr .8fr;
+            gap: 75px
+        }
+
+        .section-title {
+            font: 25px Georgia, serif;
+            font-weight: 400;
+            margin: 0 0 22px
+        }
+
+        .fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .wide {
+            grid-column: 1/-1
+        }
+
+        label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            color: #c7bfae
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 46px;
+            border: 1px solid #ffffff38;
+            background: #191816;
+            color: var(--paper);
+            padding: 0 13px;
+            border-radius: 0;
+            font: 13px Arial
+        }
+
+        input:focus,
+        select:focus {
+            outline: 1px solid var(--gold);
+            border-color: var(--gold)
+        }
+
+        .group {
+            margin-bottom: 37px
+        }
+
+        .payment-options {
+            display: grid;
+            gap: 10px
+        }
+
+        .option {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border: 1px solid var(--line);
+            padding: 15px;
+            font-size: 12px;
+            color: #ddd5c8;
+            cursor: pointer
+        }
+
+        .option:has(input:checked) {
+            border-color: var(--gold)
+        }
+
+        .option input {
+            width: 15px;
+            height: 15px;
+            accent-color: var(--gold)
+        }
+
+        .demo {
+            padding: 12px 14px;
+            border-left: 2px solid var(--gold);
+            background: #1b1916;
+            color: #bcb3a6;
+            font: 12px/1.6 Georgia, serif;
+            margin: 17px 0 0
+        }
+
+        .summary {
+            padding: 25px;
+            background: #1a1917;
+            height: max-content;
+            border: 1px solid var(--line)
+        }
+
+        .summary h2 {
+            font: 25px Georgia, serif;
+            font-weight: 400;
+            margin: 0 0 22px
+        }
+
+        .product {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .product img {
+            width: 86px;
+            height: 74px;
+            object-fit: cover
+        }
+
+        .product strong {
+            display: block;
+            font: 17px Georgia, serif;
+            font-weight: 400;
+            margin-bottom: 8px
+        }
+
+        .product span {
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .sumrow {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            font-size: 12px;
+            color: #c6bfb3
+        }
+
+        .sumrow.total {
+            border-top: 1px solid var(--line);
+            padding-top: 17px;
+            margin-top: 20px;
+            color: var(--paper);
+            font: 18px Georgia, serif
+        }
+
+        .button {
+            min-height: 49px;
+            padding: 0 18px;
+            background: var(--gold);
+            color: #17130d;
+            border: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            font-size: 9px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 22px
+        }
+
+        .secure {
+            font-size: 10px;
+            line-height: 1.6;
+            color: var(--muted);
+            margin: 14px 0 0;
+            text-align: center
+        }
+
+        .foot {
+            border-top: 1px solid var(--line);
+            padding: 25px 6%;
+            display: flex;
+            justify-content: space-between;
+            color: #89847c;
+            font-size: 9px;
+            letter-spacing: .13em;
+            text-transform: uppercase
+        }
+
+        .success {
+            position: fixed;
+            inset: 0;
+            background: #000b;
+            display: none;
+            place-items: center;
+            padding: 20px;
+            z-index: 10
+        }
+
+        .success.show {
+            display: grid
+        }
+
+        .success-card {
+            max-width: 480px;
+            background: #191816;
+            border: 1px solid var(--gold);
+            padding: 40px;
+            text-align: center
+        }
+
+        .success-card h2 {
+            font: 36px Georgia, serif;
+            font-weight: 400
+        }
+
+        .success-card p {
+            font: 14px/1.7 Georgia, serif;
+            color: #c6bfb3
+        }
+
+        .success-card button {
+            margin-top: 18px
+        }
+
+        @media(max-width:740px) {
+            .layout {
+                grid-template-columns: 1fr;
+                gap: 35px
+            }
+
+            .nav {
+                padding: 18px 5%
+            }
+
+            .brand {
+                font-size: 16px
+            }
+
+            .navlinks a:nth-child(2) {
+                display: none
+            }
+
+            main {
+                margin-top: 48px;
+                padding: 0 20px
+            }
+
+            .fields {
+                grid-template-columns: 1fr
+            }
+
+            .wide {
+                grid-column: auto
+            }
+
+            .foot {
+                gap: 12px;
+                flex-wrap: wrap
+            }
+        }
+    .store-nav{position:relative;width:100%;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.store-nav .brand{font:20px Georgia,serif;letter-spacing:.2em;text-align:left}.store-nav .brand span{display:block;font:8px Arial,sans-serif;letter-spacing:.35em;color:var(--gold);margin-top:5px}.store-links{display:flex;align-items:center;gap:22px;font-size:9px;letter-spacing:.15em;text-transform:uppercase}.store-links>a,.shop-menu>button{color:#ddd5c8}.shop-menu{position:relative}.shop-menu>button{background:none;border:0;text-transform:uppercase;letter-spacing:inherit;font-size:inherit;cursor:pointer;padding:12px 0}.drop-panel{display:none;position:absolute;top:100%;left:-12px;min-width:180px;padding:8px;background:#171615;border:1px solid var(--line);z-index:5}.drop-panel a{display:block;padding:12px;color:var(--paper)}.shop-menu:hover .drop-panel,.shop-menu:focus-within .drop-panel,.shop-menu.open .drop-panel{display:block}.bag-link{border:1px solid var(--gold);padding:9px 12px}.cart-count{color:var(--gold)}.store-nav .menu{display:none}@media(max-width:740px){.store-nav .menu{display:block;background:none;border:0;color:var(--paper);text-transform:uppercase;font-size:9px;letter-spacing:.13em}.store-nav .brand{font-size:16px}.store-links{display:none;position:absolute;top:100%;left:0;right:0;padding:12px 6%;background:#11100f;flex-direction:column;align-items:stretch;gap:0;z-index:6}.store-nav.open .store-links{display:flex}.store-links>a,.shop-menu>button{display:block;text-align:left;padding:13px 0}.drop-panel{display:block;position:static;border:0;padding:0 0 5px 12px}.store-nav{position:relative}}.foot{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center}.foot-nav,.foot-social{display:flex;align-items:center;flex-wrap:wrap;gap:15px}.foot-nav{justify-content:center}.foot-social{justify-content:flex-end}.foot-nav a,.foot-social a{color:#aaa59c;transition:color .2s}.foot-nav a:hover,.foot-social a:hover{color:var(--gold)}@media(max-width:740px){.foot{grid-template-columns:1fr;justify-items:center;text-align:center;gap:17px}.foot-nav,.foot-social{justify-content:center;gap:12px}}</style>
+</head>
+
+<body>
+    <div class="top">Independent watchmaking · Est. 1987</div>
+    <header class="store-nav"><button class="menu" aria-label="Toggle navigation">Menu</button><a class="brand" href="index.html">AURELIA<span>ATELIER HORLOGER</span></a><nav class="store-links"><a href="index.html">Home</a><a href="about.html">About us</a><div class="shop-menu"><button type="button">Shop <span>⌄</span></button><div class="drop-panel"><a href="shop.html#men">Men's watches</a><a href="shop.html#women">Women's watches</a></div></div><a href="contact.html">Contact</a><a class="bag-link" href="cart.html">Bag <span class="cart-count">0</span></a></nav></header>
+    <main>
+        <div class="crumb">Aurelia / Your bag / Checkout</div>
+        <h1>One last detail<span style="color:var(--gold)">.</span></h1>
+        <form id="form" class="layout">
+            <div>
+                <section class="group">
+                    <h2 class="section-title">Contact & delivery</h2>
+                    <div class="fields">
+                        <div class="field"><label for="name">Full name</label><input id="name" autocomplete="name"
+                                required></div>
+                        <div class="field"><label for="email">Email address</label><input id="email" type="email"
+                                autocomplete="email" required></div>
+                        <div class="field wide"><label for="address">Street address</label><input id="address"
+                                autocomplete="street-address" required></div>
+                        <div class="field"><label for="city">City</label><input id="city" autocomplete="address-level2"
+                                required></div>
+                        <div class="field"><label for="postal">Postal code</label><input id="postal"
+                                autocomplete="postal-code" required></div>
+                        <div class="field wide"><label for="country">Country / region</label><select id="country"
+                                required>
+                                <option value="">Select country</option>
+                                <option>India</option>
+                                <option>United States</option>
+                                <option>United Kingdom</option>
+                                <option>Singapore</option>
+                                <option>United Arab Emirates</option>
+                                <option>Other</option>
+                            </select></div>
+                    </div>
+                </section>
+                <section class="group">
+                    <h2 class="section-title">Payment method</h2>
+                    <div class="payment-options"><label class="option"><input type="radio" name="payment" value="card"
+                                checked> Credit or debit card</label><label class="option"><input type="radio"
+                                name="payment" value="upi"> UPI</label><label class="option"><input type="radio"
+                                name="payment" value="bank"> Bank transfer</label></div>
+                    <p class="demo">Demo checkout only. No payment is collected or transmitted. Connect a payment
+                        provider and secure server before accepting orders.</p>
+                </section>
+            </div>
+            <aside class="summary">
+                <h2>Order summary</h2>
+                <div id="product"></div>
+                <div class="sumrow"><span>Subtotal</span><span id="subtotal"></span></div>
+                <div class="sumrow"><span>Insured delivery</span><span>Complimentary</span></div>
+                <div class="sumrow total"><span>Total</span><span id="total"></span></div><button class="button"
+                    type="submit">Place demo order&nbsp; →</button>
+                <p class="secure">Your details stay in this browser. This demonstration does not process payment.</p>
+            </aside>
+        </form>
+    </main>
+    <footer class="foot"><span class="copyright">© Aurelia Atelier 2026</span><nav class="foot-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="about.html">About us</a><a href="shop.html">Shop</a><a href="shop.html#men">Men</a><a href="shop.html#women">Women</a><a href="contact.html">Contact</a><a href="cart.html">Bag</a></nav><nav class="foot-social" aria-label="Social media"><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook ↗</a></nav></footer>
+    <div class="success" id="success">
+        <div class="success-card">
+            <div class="crumb">Aurelia Atelier · Order received</div>
+            <h2>Thank you<span style="color:var(--gold)">.</span></h2>
+            <p>Your demo order has been placed. No payment was taken. This storefront needs a payment provider
+                connection to accept real orders.</p><button class="button" type="button" id="done">Return to the
+                collection</button>
+        </div>
+    </div>
+    <script>
+        (() => { const KEY = "aurelia-cart", cart = (() => { try { return JSON.parse(localStorage.getItem(KEY) || "[]") } catch { return [] } })(), fmt = n => "₹" + Number(n).toLocaleString("en-IN"), qty = cart.reduce((n, x) => n + x.qty, 0), total = cart.reduce((n, x) => n + x.qty * x.price, 0); if (!qty) { location.replace("cart.html"); return } document.querySelectorAll(".cart-count").forEach(el => el.textContent = qty); document.getElementById("product").innerHTML = cart.map(x => `<div class="product"><img src="${x.image}" alt=""><div><strong>${x.name}</strong><span>Qty ${x.qty} · ${fmt(x.price)}</span></div></div>`).join(""); document.getElementById("subtotal").textContent = fmt(total); document.getElementById("total").textContent = fmt(total); document.getElementById("form").addEventListener("submit", e => { e.preventDefault(); if (!e.currentTarget.reportValidity()) return; localStorage.removeItem(KEY); document.getElementById("success").classList.add("show") }); document.getElementById("done").onclick = () => location.href = "index.html"; document.querySelector(".menu").addEventListener("click", () => document.querySelector(".store-nav").classList.toggle("open")); document.querySelector(".shop-menu>button").addEventListener("click", () => document.querySelector(".shop-menu").classList.toggle("open")) })();</script>
+</body>
+
+</html>
+
+
