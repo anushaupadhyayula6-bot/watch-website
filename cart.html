@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#11100f">
+    <title>Your Bag — Aurelia Atelier</title>
+    <style>
+        :root {
+            --ink: #11100f;
+            --paper: #f0ede6;
+            --gold: #c8a66b;
+            --muted: #aaa59c;
+            --line: #ffffff28
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--ink);
+            color: var(--paper);
+            font-family: Arial, sans-serif
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .top {
+            height: 34px;
+            border-bottom: 1px solid var(--line);
+            display: grid;
+            place-items: center;
+            color: #c5b79e;
+            font-size: 9px;
+            letter-spacing: .24em;
+            text-transform: uppercase
+        }
+
+        .nav {
+            padding: 23px 6%;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .brand {
+            font: 20px Georgia, serif;
+            letter-spacing: .2em;
+            text-align: center
+        }
+
+        .brand small {
+            display: block;
+            font: 8px Arial, sans-serif;
+            letter-spacing: .35em;
+            color: var(--gold);
+            margin-top: 5px
+        }
+
+        .navlinks {
+            display: flex;
+            gap: 25px;
+            font-size: 9px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: #d6cfc2
+        }
+
+        .cartlink {
+            color: var(--gold)
+        }
+
+        main {
+            max-width: 1050px;
+            margin: 80px auto 120px;
+            padding: 0 28px
+        }
+
+        .crumb {
+            font-size: 9px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        h1 {
+            font: clamp(44px, 7vw, 76px) Georgia, serif;
+            font-weight: 400;
+            margin: 22px 0 45px
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.5fr .8fr;
+            gap: 70px
+        }
+
+        .item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 25px;
+            padding: 22px 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line)
+        }
+
+        .item img {
+            width: 100%;
+            aspect-ratio: 1.15;
+            object-fit: cover
+        }
+
+        .item h2 {
+            font: 27px Georgia, serif;
+            font-weight: 400;
+            margin: 8px 0
+        }
+
+        .sub {
+            font-size: 10px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--muted)
+        }
+
+        .price {
+            font: 17px Georgia, serif;
+            margin: 20px 0
+        }
+
+        .itemrow {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            flex-wrap: wrap
+        }
+
+        .qty {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--line)
+        }
+
+        .qty button {
+            width: 34px;
+            height: 34px;
+            background: none;
+            border: 0;
+            color: var(--paper);
+            cursor: pointer
+        }
+
+        .qty span {
+            min-width: 28px;
+            text-align: center;
+            font-size: 12px
+        }
+
+        .remove {
+            border: 0;
+            background: none;
+            color: #bda475;
+            text-decoration: underline;
+            font-size: 10px;
+            cursor: pointer
+        }
+
+        .summary {
+            padding: 25px;
+            background: #1a1917;
+            height: max-content;
+            border: 1px solid var(--line)
+        }
+
+        .summary h2 {
+            font: 25px Georgia, serif;
+            font-weight: 400;
+            margin: 0 0 25px
+        }
+
+        .sumrow {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            font-size: 12px;
+            color: #c6bfb3
+        }
+
+        .sumrow.total {
+            border-top: 1px solid var(--line);
+            padding-top: 17px;
+            margin-top: 20px;
+            color: var(--paper);
+            font: 18px Georgia, serif
+        }
+
+        .note {
+            font: 13px/1.6 Georgia, serif;
+            color: var(--muted);
+            margin: 18px 0 25px
+        }
+
+        .button {
+            min-height: 49px;
+            padding: 0 18px;
+            background: var(--gold);
+            color: #17130d;
+            border: 1px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            font-size: 9px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            cursor: pointer
+        }
+
+        .empty {
+            color: var(--muted);
+            font: 18px Georgia, serif;
+            padding: 40px 0
+        }
+
+        .continue {
+            display: inline-block;
+            margin-top: 25px;
+            color: var(--gold);
+            font-size: 10px;
+            letter-spacing: .15em;
+            text-transform: uppercase
+        }
+
+        .foot {
+            border-top: 1px solid var(--line);
+            padding: 25px 6%;
+            display: flex;
+            justify-content: space-between;
+            color: #89847c;
+            font-size: 9px;
+            letter-spacing: .13em;
+            text-transform: uppercase
+        }
+
+        @media(max-width:700px) {
+            .nav {
+                padding: 18px 5%
+            }
+
+            .navlinks a:nth-child(2) {
+                display: none
+            }
+
+            .brand {
+                font-size: 16px
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+                gap: 28px
+            }
+
+            main {
+                margin-top: 55px;
+                padding: 0 20px
+            }
+
+            .item {
+                grid-template-columns: 120px 1fr;
+                gap: 17px
+            }
+
+            .item h2 {
+                font-size: 22px
+            }
+
+            .foot {
+                gap: 12px;
+                flex-wrap: wrap
+            }
+        }
+    .store-nav{position:relative;width:100%;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.store-nav .brand{font:20px Georgia,serif;letter-spacing:.2em;text-align:left}.store-nav .brand span{display:block;font:8px Arial,sans-serif;letter-spacing:.35em;color:var(--gold);margin-top:5px}.store-links{display:flex;align-items:center;gap:22px;font-size:9px;letter-spacing:.15em;text-transform:uppercase}.store-links>a,.shop-menu>button{color:#ddd5c8}.shop-menu{position:relative}.shop-menu>button{background:none;border:0;text-transform:uppercase;letter-spacing:inherit;font-size:inherit;cursor:pointer;padding:12px 0}.drop-panel{display:none;position:absolute;top:100%;left:-12px;min-width:180px;padding:8px;background:#171615;border:1px solid var(--line);z-index:5}.drop-panel a{display:block;padding:12px;color:var(--paper)}.shop-menu:hover .drop-panel,.shop-menu:focus-within .drop-panel,.shop-menu.open .drop-panel{display:block}.bag-link{border:1px solid var(--gold);padding:9px 12px}.cart-count{color:var(--gold)}.store-nav .menu{display:none}@media(max-width:740px){.store-nav .menu{display:block;background:none;border:0;color:var(--paper);text-transform:uppercase;font-size:9px;letter-spacing:.13em}.store-nav .brand{font-size:16px}.store-links{display:none;position:absolute;top:100%;left:0;right:0;padding:12px 6%;background:#11100f;flex-direction:column;align-items:stretch;gap:0;z-index:6}.store-nav.open .store-links{display:flex}.store-links>a,.shop-menu>button{display:block;text-align:left;padding:13px 0}.drop-panel{display:block;position:static;border:0;padding:0 0 5px 12px}.store-nav{position:relative}}.foot{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center}.foot-nav,.foot-social{display:flex;align-items:center;flex-wrap:wrap;gap:15px}.foot-nav{justify-content:center}.foot-social{justify-content:flex-end}.foot-nav a,.foot-social a{color:#aaa59c;transition:color .2s}.foot-nav a:hover,.foot-social a:hover{color:var(--gold)}@media(max-width:740px){.foot{grid-template-columns:1fr;justify-items:center;text-align:center;gap:17px}.foot-nav,.foot-social{justify-content:center;gap:12px}}</style>
+</head>
+
+<body>
+    <div class="top">Independent watchmaking · Est. 1987</div>
+    <header class="store-nav"><button class="menu" aria-label="Toggle navigation">Menu</button><a class="brand" href="index.html">AURELIA<span>ATELIER HORLOGER</span></a><nav class="store-links"><a href="index.html">Home</a><a href="about.html">About us</a><div class="shop-menu"><button type="button">Shop <span>⌄</span></button><div class="drop-panel"><a href="shop.html#men">Men's watches</a><a href="shop.html#women">Women's watches</a></div></div><a href="contact.html">Contact</a><a class="bag-link" href="cart.html">Bag <span class="cart-count">0</span></a></nav></header>
+    <main>
+        <div class="crumb">Aurelia / Your bag</div>
+        <h1>Your bag<span style="color:var(--gold)">.</span></h1>
+        <div class="layout">
+            <section id="items"></section>
+            <aside class="summary">
+                <h2>Order summary</h2>
+                <div class="sumrow"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+                <div class="sumrow"><span>Insured delivery</span><span>Complimentary</span></div>
+                <div class="sumrow total"><span>Total</span><span id="total">₹0</span></div>
+                <p class="note">Taxes included. Complimentary insured delivery on every timepiece.</p><a class="button"
+                    href="checkout.html" id="checkout">Continue to checkout&nbsp; →</a><a class="continue"
+                    href="index.html#collection">← Continue exploring</a>
+            </aside>
+        </div>
+    </main>
+    <footer class="foot"><span class="copyright">© Aurelia Atelier 2026</span><nav class="foot-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="about.html">About us</a><a href="shop.html">Shop</a><a href="shop.html#men">Men</a><a href="shop.html#women">Women</a><a href="contact.html">Contact</a><a href="cart.html">Bag</a></nav><nav class="foot-social" aria-label="Social media"><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a><a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook ↗</a></nav></footer>
+    <script>
+        (() => { const KEY = "aurelia-cart", fmt = n => "₹" + Number(n).toLocaleString("en-IN"), items = document.getElementById("items"); function read() { try { return JSON.parse(localStorage.getItem(KEY) || "[]") } catch { return [] } } function save(c) { localStorage.setItem(KEY, JSON.stringify(c)); render() } function render() { const cart = read(), qty = cart.reduce((n, x) => n + x.qty, 0), sum = cart.reduce((n, x) => n + x.qty * x.price, 0); document.getElementById("count").textContent = qty; document.querySelectorAll(".cart-count").forEach(el => el.textContent = qty); document.getElementById("subtotal").textContent = fmt(sum); document.getElementById("total").textContent = fmt(sum); document.getElementById("checkout").style.opacity = qty ? "1" : ".45"; document.getElementById("checkout").style.pointerEvents = qty ? "auto" : "none"; if (!cart.length) { items.innerHTML = '<div class="empty">Your bag is waiting for something timeless.</div>'; return } items.innerHTML = cart.map(x => `<article class="item" data-id="${x.id}"><img src="${x.image}" alt="Aurelia No. 08 watch"><div><div class="sub">Automatic · No. 08</div><h2>${x.name}</h2><div class="price">${fmt(x.price)}</div><div class="itemrow"><div class="qty"><button data-act="minus" aria-label="Decrease quantity">−</button><span>${x.qty}</span><button data-act="plus" aria-label="Increase quantity">＋</button></div><button class="remove" data-act="remove">Remove</button></div></div></article>`).join(""); items.querySelectorAll("[data-act]").forEach(b => b.onclick = () => { const c = read(), id = b.closest(".item").dataset.id, it = c.find(y => y.id === id); if (!it) return; if (b.dataset.act === "plus") it.qty++; if (b.dataset.act === "minus") it.qty--; if (b.dataset.act === "remove" || it.qty < 1) c.splice(c.indexOf(it), 1); save(c) }) } render();document.querySelector(".menu").addEventListener("click",()=>document.querySelector(".store-nav").classList.toggle("open"));document.querySelector(".shop-menu>button").addEventListener("click",()=>document.querySelector(".shop-menu").classList.toggle("open"))})();</script>
+</body>
+
+</html>
+
+
